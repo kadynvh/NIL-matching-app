@@ -9,9 +9,9 @@ with app.app_context():
 
     # Add sample student-athletes
     athletes = [
-        StudentAthlete(name="John Doe", email="john@example.com", sport="Basketball", school="State University", year="Junior", interests="Sneakers, Energy Drinks", location="Los Angeles, CA"),
-        StudentAthlete(name="Jane Smith", email="jane@example.com", sport="Soccer", school="City College", year="Sophomore", interests="Fitness, Healthy Eating", location="New York, NY"),
-        StudentAthlete(name="Mike Johnson", email="mike@example.com", sport="Football", school="Southern Tech", year="Senior", interests="Supplements, Gym Equipment", location="Dallas, TX")
+        StudentAthlete(name="John Doe", email="john@example.com", sport="Basketball", school="State University", year="Junior", interests="Sneakers, Energy Drinks", location="Los Angeles, CA", password="john123"),
+        StudentAthlete(name="Jane Smith", email="jane@example.com", sport="Soccer", school="City College", year="Sophomore", interests="Fitness, Healthy Eating", location="New York, NY", password="jane456"),
+        StudentAthlete(name="Mike Johnson", email="mike@example.com", sport="Football", school="Southern Tech", year="Senior", interests="Supplements, Gym Equipment", location="Dallas, TX", password="mike789"),
     ]
 
     # Add sample businesses

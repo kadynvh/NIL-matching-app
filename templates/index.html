@@ -1,22 +1,60 @@
 <!DOCTYPE html>
-
-<html lang=“en”>
-
+<html lang="en">
 <head>
-
-    <meta charset=“UTF-8”>
-
-    <title>NIL Deal Matching App</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIL Matching App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-
 <body>
 
-    <h1>{{ message }}</h1>
+<header>NIL Matching App</header>
 
-
-    <p>This is a placeholder page for our app.</p>
+<div class="container">
+    <h1>Connect with Top Brands for NIL Deals</h1>
+    <p>
+        The NIL Matching App helps student-athletes connect with businesses for sponsorships, endorsements, and NIL deals.
+        We match you with brands that align with your sport, location, and interests.
+    </p>
+    <a href="/login" class="btn">Login</a>
+</div>
 
 </body>
-
 </html>
