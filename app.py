@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
-from models import db, StudentAthlete, Business, NILMatch
+from models import db, StudentAthlete, Business
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -30,7 +30,7 @@ def login():
         # Check if user exists and password matches
         athlete = StudentAthlete.query.filter_by(email=email).first()
 
-        if athlete and athlete.password == password:  # Simple password check
+        if athlete and athlete.password == password:
             session['user_id'] = athlete.id
             flash("Login successful!", "success")
             return redirect(url_for('dashboard'))
@@ -52,19 +52,63 @@ def dashboard():
         flash("User not found. Please log in again.", "danger")
         return redirect(url_for('login'))
 
-    # Fetch only the NIL deals relevant to the logged-in student-athlete
-    matches = NILMatch.query.filter_by(athlete_id=athlete.id).all()
+    # Get manually selected businesses from session storage
+    selected_deals = session.get(f"selected_deals_{user_id}", [])
 
-    nil_deals = []
-    for match in matches:
-        business = Business.query.get(match.business_id)
-        nil_deals.append({
-            "business": business.name if business else "Unknown",
-            "industry": business.industry if business else "Unknown",
-            "status": match.status
-        })
+    return render_template('dashboard.html', athlete=athlete, selected_deals=selected_deals)
 
-    return render_template('dashboard.html', athlete=athlete, nil_deals=nil_deals)
+@app.route('/businesses', methods=['GET', 'POST'])
+def businesses():
+    if 'user_id' not in session:
+        flash("Please log in to browse businesses.", "warning")
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    athlete = StudentAthlete.query.get(user_id)
+
+    if not athlete:
+        flash("User not found. Please log in again.", "danger")
+        return redirect(url_for('login'))
+
+    businesses = Business.query.all()
+
+    if request.method == 'POST':
+        selected_business_id = request.form.get('business_id')
+        business = Business.query.get(selected_business_id)
+
+        if business:
+            selected_deals = session.get(f"selected_deals_{user_id}", [])
+            if business.name not in [deal["business"] for deal in selected_deals]:
+                selected_deals.append({
+                    "business": business.name,
+                    "industry": business.industry,
+                    "status": "Pending"
+                })
+                session[f"selected_deals_{user_id}"] = selected_deals
+                flash("Business added to your NIL deals!", "success")
+            else:
+                flash("This business is already in your NIL deals.", "warning")
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('businesses.html', athlete=athlete, businesses=businesses)
+
+@app.route('/remove_business', methods=['POST'])
+def remove_business():
+    if 'user_id' not in session:
+        flash("Please log in to modify your NIL deals.", "warning")
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    business_name = request.form.get('business_name')
+
+    if business_name:
+        selected_deals = session.get(f"selected_deals_{user_id}", [])
+        selected_deals = [deal for deal in selected_deals if deal["business"] != business_name]
+        session[f"selected_deals_{user_id}"] = selected_deals
+        flash(f"Removed {business_name} from your NIL deals.", "info")
+
+    return redirect(url_for('dashboard'))
 
 @app.route('/logout')
 def logout():

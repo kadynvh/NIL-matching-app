@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Businesses</title>
+</head>
+<body>
+
+<h1>Browse Businesses</h1>
+
+<form method="POST">
+    <table>
+        <tr>
+            <th>Business Name</th>
+            <th>Industry</th>
+            <th>Location</th>
+            <th>Target Sports</th>
+            <th>Select</th>
+        </tr>
+        {% for business in businesses %}
+        <tr>
+            <td>{{ business.name }}</td>
+            <td>{{ business.industry }}</td>
+            <td>{{ business.location }}</td>
+            <td>{{ business.target_sports }}</td>
+            <td><button type="submit" name="business_id" value="{{ business.id }}">Add to NIL Deals</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+
+</body>
+</html>

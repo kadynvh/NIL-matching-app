@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Athlete Dashboard</title>
+    <title>Dashboard - NIL Matching App</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; text-align: center; }
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; text-align: center; }
         .container { max-width: 800px; margin: 50px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
         h1, h2 { color: #343a40; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
         th { background-color: #f4f4f4; }
-        .logout-btn { display: inline-block; background-color: #dc3545; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-top: 20px; }
-        .logout-btn:hover { background-color: #c82333; }
+        .btn { display: inline-block; background-color: #007bff; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-top: 20px; }
+        .btn:hover { background-color: #0056b3; }
+        .remove-btn { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        .remove-btn:hover { background-color: #c82333; }
     </style>
 </head>
 <body>
@@ -20,34 +22,35 @@
 <div class="container">
     <h1>Welcome, {{ athlete.name }}!</h1>
 
-    <h2>Your Profile</h2>
-    <p><strong>Sport:</strong> {{ athlete.sport }}</p>
-    <p><strong>School:</strong> {{ athlete.school }}</p>
-    <p><strong>Year:</strong> {{ athlete.year }}</p>
-    <p><strong>Location:</strong> {{ athlete.location }}</p>
-    <p><strong>Interests:</strong> {{ athlete.interests }}</p>
-
     <h2>Potential NIL Deals</h2>
     <table>
         <tr>
             <th>Business</th>
             <th>Industry</th>
             <th>Deal Status</th>
+            <th>Action</th>
         </tr>
-        {% for deal in nil_deals %}
+        {% for deal in selected_deals %}
         <tr>
             <td>{{ deal.business }}</td>
             <td>{{ deal.industry }}</td>
             <td>{{ deal.status }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('remove_business') }}">
+                    <input type="hidden" name="business_name" value="{{ deal.business }}">
+                    <button type="submit" class="remove-btn">Remove</button>
+                </form>
+            </td>
         </tr>
         {% else %}
         <tr>
-            <td colspan="3">No NIL deals available.</td>
+            <td colspan="4">No NIL deals added. Browse businesses to add deals.</td>
         </tr>
         {% endfor %}
     </table>
 
-    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    <a href="{{ url_for('businesses') }}" class="btn">Browse Businesses</a>
+    <a href="{{ url_for('logout') }}" class="btn" style="background-color: #dc3545;">Logout</a>
 </div>
 
 </body>

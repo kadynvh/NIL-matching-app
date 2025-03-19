@@ -1,9 +1,9 @@
 from app import app, db
-from models import StudentAthlete, Business, NILMatch
+from models import StudentAthlete, Business
 
 with app.app_context():
     # Check if data already exists
-    if StudentAthlete.query.first() and Business.query.first() and NILMatch.query.first():
+    if StudentAthlete.query.first() and Business.query.first():
         print("✅ Mock data already exists. Skipping...")
         exit()
 
@@ -14,34 +14,24 @@ with app.app_context():
         StudentAthlete(name="Mike Johnson", email="mike@example.com", sport="Football", school="Southern Tech", year="Senior", interests="Supplements, Gym Equipment", location="Dallas, TX", password="mike789"),
     ]
 
-    # Add sample businesses
+    # Add sample businesses (Now with 10+ businesses)
     businesses = [
         Business(name="SneakerCo", email="contact@sneakerco.com", industry="Apparel", target_sports="Basketball, Football", budget=50000, location="Los Angeles, CA"),
         Business(name="Healthy Bites", email="info@healthybites.com", industry="Food & Beverage", target_sports="Soccer, Track", budget=20000, location="New York, NY"),
-        Business(name="Pro Gym Gear", email="support@progymgear.com", industry="Fitness Equipment", target_sports="Football, Basketball", budget=75000, location="Dallas, TX")
+        Business(name="Pro Gym Gear", email="support@progymgear.com", industry="Fitness Equipment", target_sports="Football, Basketball", budget=75000, location="Dallas, TX"),
+        Business(name="Elite Supplements", email="elite@suppl.com", industry="Health & Wellness", target_sports="All Sports", budget=30000, location="Chicago, IL"),
+        Business(name="GameBoost", email="info@gameboost.com", industry="Esports & Gaming", target_sports="Esports", budget=45000, location="Seattle, WA"),
+        Business(name="HydraWater", email="contact@hydrawater.com", industry="Beverages", target_sports="Swimming, Track", budget=35000, location="Miami, FL"),
+        Business(name="Peak Performance", email="peak@perf.com", industry="Fitness Coaching", target_sports="All Sports", budget=40000, location="Denver, CO"),
+        Business(name="Urban Wear", email="sales@urbanwear.com", industry="Fashion", target_sports="Basketball, Soccer", budget=25000, location="Atlanta, GA"),
+        Business(name="SpeedPro Energy", email="info@speedpro.com", industry="Energy Drinks", target_sports="Football, Racing", budget=60000, location="Las Vegas, NV"),
+        Business(name="Champion Physio", email="contact@championphysio.com", industry="Physical Therapy", target_sports="Injury Recovery", budget=15000, location="Houston, TX"),
+        Business(name="NextGen Tech", email="hello@nextgentech.com", industry="Wearable Tech", target_sports="All Sports", budget=80000, location="San Francisco, CA"),
+        Business(name="Nutriblend", email="team@nutriblend.com", industry="Supplements", target_sports="Weightlifting, Wrestling", budget=50000, location="Phoenix, AZ"),
     ]
 
     # Add data to the database
     db.session.add_all(athletes + businesses)
     db.session.commit()
 
-    # Fetch added data
-    athlete1 = StudentAthlete.query.filter_by(email="john@example.com").first()
-    athlete2 = StudentAthlete.query.filter_by(email="jane@example.com").first()
-    athlete3 = StudentAthlete.query.filter_by(email="mike@example.com").first()
-
-    business1 = Business.query.filter_by(email="contact@sneakerco.com").first()
-    business2 = Business.query.filter_by(email="info@healthybites.com").first()
-    business3 = Business.query.filter_by(email="support@progymgear.com").first()
-
-    # Add sample NIL Matches
-    nil_deals = [
-        NILMatch(athlete_id=athlete1.id, business_id=business1.id, status="Pending", deal_terms="Social media promotion"),
-        NILMatch(athlete_id=athlete2.id, business_id=business2.id, status="Approved", deal_terms="Sponsored meal plan"),
-        NILMatch(athlete_id=athlete3.id, business_id=business3.id, status="Rejected", deal_terms="Gym sponsorship"),
-    ]
-
-    db.session.add_all(nil_deals)
-    db.session.commit()
-
-    print("✅ Mock data added successfully! NIL Deals included!")
+    print("✅ Mock data added successfully!")
