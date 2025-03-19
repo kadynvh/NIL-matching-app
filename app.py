@@ -5,9 +5,12 @@ from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy
 
 app = Flask(__name__)
 
-# Configure the database
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Get the project root directory
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(BASE_DIR, "nil.db")}'  # Absolute path for nil.db
+# Ensure the 'instance' directory exists
+INSTANCE_DIR = os.path.join(os.getcwd(), "instance")
+os.makedirs(INSTANCE_DIR, exist_ok=True)
+
+# Configure the database (store it in 'instance/')
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(INSTANCE_DIR, 'nil.db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
 
 # Initialize the database
@@ -20,4 +23,3 @@ def home():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
