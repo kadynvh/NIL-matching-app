@@ -1,7 +1,12 @@
 from app import app, db
-from models import StudentAthlete, Business
+from models import StudentAthlete, Business, NILMatch
 
 with app.app_context():
+    # Check if data already exists
+    if StudentAthlete.query.first() and Business.query.first() and NILMatch.query.first():
+        print("✅ Mock data already exists. Skipping...")
+        exit()
+
     # Add sample student-athletes
     athletes = [
         StudentAthlete(name="John Doe", email="john@example.com", sport="Basketball", school="State University", year="Junior", interests="Sneakers, Energy Drinks", location="Los Angeles, CA"),
@@ -20,4 +25,23 @@ with app.app_context():
     db.session.add_all(athletes + businesses)
     db.session.commit()
 
-    print("✅ Mock data added successfully!")
+    # Fetch added data
+    athlete1 = StudentAthlete.query.filter_by(email="john@example.com").first()
+    athlete2 = StudentAthlete.query.filter_by(email="jane@example.com").first()
+    athlete3 = StudentAthlete.query.filter_by(email="mike@example.com").first()
+
+    business1 = Business.query.filter_by(email="contact@sneakerco.com").first()
+    business2 = Business.query.filter_by(email="info@healthybites.com").first()
+    business3 = Business.query.filter_by(email="support@progymgear.com").first()
+
+    # Add sample NIL Matches
+    nil_deals = [
+        NILMatch(athlete_id=athlete1.id, business_id=business1.id, status="Pending", deal_terms="Social media promotion"),
+        NILMatch(athlete_id=athlete2.id, business_id=business2.id, status="Approved", deal_terms="Sponsored meal plan"),
+        NILMatch(athlete_id=athlete3.id, business_id=business3.id, status="Rejected", deal_terms="Gym sponsorship"),
+    ]
+
+    db.session.add_all(nil_deals)
+    db.session.commit()
+
+    print("✅ Mock data added successfully! NIL Deals included!")

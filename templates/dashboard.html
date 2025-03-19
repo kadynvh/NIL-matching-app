@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Athlete Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+
+<h1>Welcome, Student Athlete!</h1>
+
+<h2>Your Profile</h2>
+{% for athlete in athletes %}
+<p><strong>Name:</strong> {{ athlete.name }}</p>
+<p><strong>Sport:</strong> {{ athlete.sport }}</p>
+<p><strong>School:</strong> {{ athlete.school }}</p>
+<p><strong>Location:</strong> {{ athlete.location }}</p>
+<p><strong>Interests:</strong> {{ athlete.interests }}</p>
+<hr>
+{% endfor %}
+
+<h2>Potential NIL Deals</h2>
+<table>
+    <tr>
+        <th>Business</th>
+        <th>Industry</th>
+        <th>Deal Status</th>
+    </tr>
+    {% for deal in nil_deals %}
+    <tr>
+        <td>{{ deal.business }}</td>
+        <td>{{ deal.industry }}</td>
+        <td>{{ deal.status }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="3">No NIL deals available.</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
