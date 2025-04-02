@@ -27,7 +27,6 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        # Check if user exists and password matches
         athlete = StudentAthlete.query.filter_by(email=email).first()
 
         if athlete and athlete.password == password:
@@ -38,6 +37,52 @@ def login():
             flash("Invalid email or password. Try again.", "danger")
 
     return render_template('login.html')
+
+@app.route('/sign_up', methods=['GET', 'POST'])
+def sign_up():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        school = request.form['school']
+        sport = request.form['sport']
+        year = request.form.get('grad_year')
+        bio = ""
+        interests = ""
+        location = ""
+
+        if password != confirm_password:
+            flash("Passwords do not match.", "danger")
+            return render_template('sign_up.html')
+
+        existing_user = StudentAthlete.query.filter_by(email=email).first()
+        if existing_user:
+            flash("An account with this email already exists.", "danger")
+            return render_template('sign_up.html')
+
+        # Create and save new user
+        new_athlete = StudentAthlete(
+            name=name,
+            email=email,
+            password=password,
+            sport=sport,
+            school=school,
+            year=year,
+            bio=bio,
+            interests=interests,
+            location=location
+        )
+        db.session.add(new_athlete)
+        db.session.commit()
+
+        # ✅ Automatically log in and redirect to dashboard
+        session['user_id'] = new_athlete.id
+        flash("Account created successfully! Welcome, {}.".format(name), "success")
+        return redirect(url_for('dashboard'))
+
+    return render_template('sign_up.html')
+
 
 @app.route('/dashboard')
 def dashboard():
@@ -52,7 +97,6 @@ def dashboard():
         flash("User not found. Please log in again.", "danger")
         return redirect(url_for('login'))
 
-    # Get manually selected businesses from session storage
     selected_deals = session.get(f"selected_deals_{user_id}", [])
 
     return render_template('dashboard.html', athlete=athlete, selected_deals=selected_deals)

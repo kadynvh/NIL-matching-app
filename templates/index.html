@@ -45,19 +45,39 @@
 
         .btn {
             display: inline-block;
-            background-color: #4f46e5;
-            color: white;
             padding: 0.75rem 1.5rem;
             font-size: 1.1rem;
             border: none;
             border-radius: 6px;
             text-decoration: none;
-            margin-top: 1.5rem;
             transition: background-color 0.2s ease;
+            margin-top: 1.5rem;
         }
 
-        .btn:hover {
+        .login-btn {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .login-btn:hover {
             background-color: #3730a3;
+        }
+
+        .signup-btn {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        .signup-btn:hover {
+            background-color: #16a34a;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
         }
     </style>
 </head>
@@ -71,7 +91,11 @@
         The NIL Matching App helps student-athletes connect with businesses for sponsorships, endorsements, and NIL deals.
         We match you with brands that align with your sport, location, and interests.
     </p>
-    <a href="/login" class="btn">Login</a>
+
+    <div class="button-group">
+        <a href="/login" class="btn login-btn">Login</a>
+        <a href="/sign_up" class="btn signup-btn">Sign Up</a>
+    </div>
 </div>
 
 </body>
