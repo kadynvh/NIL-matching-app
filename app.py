@@ -83,6 +83,42 @@ def sign_up():
 
     return render_template('sign_up.html')
 
+@app.route('/profile')
+def profile():
+    if 'user_id' not in session:
+        flash("Please log in to view your profile.", "warning")
+        return redirect(url_for('login'))
+
+    athlete = StudentAthlete.query.get(session['user_id'])
+
+    if not athlete:
+        flash("User not found.", "danger")
+        return redirect(url_for('login'))
+
+    return render_template('profile.html', athlete=athlete)
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+def edit_profile():
+    if 'user_id' not in session:
+        flash("Please log in to edit your profile.", "warning")
+        return redirect(url_for('login'))
+
+    athlete = StudentAthlete.query.get(session['user_id'])
+
+    if request.method == 'POST':
+        athlete.school = request.form['school']
+        athlete.sport = request.form['sport']
+        athlete.year = request.form['year']
+        athlete.location = request.form.get('location')
+        athlete.bio = request.form.get('bio')
+        athlete.interests = request.form.get('interests')
+
+        db.session.commit()
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for('profile'))
+
+    return render_template('edit_profile.html', athlete=athlete)
+
 
 @app.route('/dashboard')
 def dashboard():

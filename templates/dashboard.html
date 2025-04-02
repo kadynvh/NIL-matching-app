@@ -21,6 +21,7 @@
             padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+            position: relative;
         }
 
         h1, h2 {
@@ -77,11 +78,22 @@
         .remove-btn:hover {
             background-color: #b02a37;
         }
+
+        .top-left-link {
+            text-align: left;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+
+    <!-- Top-left View Profile button -->
+    <div class="top-left-link">
+        <a href="{{ url_for('profile') }}" class="btn">← View Profile</a>
+    </div>
+
     <h1>Welcome, {{ athlete.name }}!</h1>
 
     <h2>Potential NIL Deals</h2>
@@ -111,8 +123,10 @@
         {% endfor %}
     </table>
 
-    <a href="{{ url_for('businesses') }}" class="btn">Browse Businesses</a>
-    <a href="{{ url_for('logout') }}" class="btn" style="background-color: #dc3545;">Logout</a>
+    <div style="margin-top: 2rem;">
+        <a href="{{ url_for('businesses') }}" class="btn">Browse Businesses</a>
+        <a href="{{ url_for('logout') }}" class="btn" style="background-color: #dc3545;">Logout</a>
+    </div>
 </div>
 
 </body>

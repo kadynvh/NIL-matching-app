@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - NIL Matching App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1e1e2f;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 60px auto;
+            background-color: #2b2b40;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.75rem 0;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #1e1e2f;
+            color: #f0f0f0;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #aaa;
+        }
+
+        .btn {
+            margin-top: 1rem;
+            background-color: #4f46e5;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #3730a3;
+        }
+
+        h2 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Edit Profile</h2>
+    <form method="POST" action="{{ url_for('edit_profile') }}">
+        <input type="text" name="school" placeholder="School" value="{{ athlete.school }}" required>
+        <input type="text" name="sport" placeholder="Sport" value="{{ athlete.sport }}" required>
+        <input type="text" name="year" placeholder="Graduation Year" value="{{ athlete.year }}" required>
+        <input type="text" name="location" placeholder="Location" value="{{ athlete.location }}">
+        <textarea name="bio" placeholder="Bio" rows="4">{{ athlete.bio }}</textarea>
+        <input type="text" name="interests" placeholder="Interests" value="{{ athlete.interests }}">
+        <button type="submit" class="btn">Save Changes</button>
+    </form>
+</div>
+
+</body>
+</html>
