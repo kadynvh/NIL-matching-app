@@ -16,7 +16,65 @@
         h1 {
             text-align: center;
             color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #4f46e5;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #3730a3;
+        }
+
+        .top-left-nav {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
             margin-bottom: 2rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-bar input,
+        .filter-bar select,
+        .filter-bar button {
+            padding: 0.6rem;
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .filter-bar input,
+        .filter-bar select {
+            background-color: #2b2b40;
+            color: #f0f0f0;
+        }
+
+        .filter-bar button {
+            background-color: #4f46e5;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-bar button:hover {
+            background-color: #3730a3;
         }
 
         .business-grid {
@@ -66,12 +124,61 @@
         .card button:hover {
             background-color: #3730a3;
         }
+
+        @media (max-width: 500px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-bar input,
+            .filter-bar select,
+            .filter-bar button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 
+<!-- Top-left nav -->
+<div class="top-left-nav">
+    <a href="{{ url_for('dashboard') }}" class="btn">← Back to Dashboard</a>
+</div>
+
 <h1>Browse Businesses</h1>
 
+<!-- Filter Form -->
+<form method="GET">
+    <div class="filter-bar">
+        <input type="text" name="search" placeholder="Search by name..." value="{{ request.args.get('search', '') }}">
+
+        <select name="location">
+            <option value="">All Locations</option>
+            {% for loc in locations %}
+            <option value="{{ loc }}" {% if request.args.get('location') == loc %}selected{% endif %}>{{ loc }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="industry">
+            <option value="">All Industries</option>
+            {% for ind in industries %}
+            <option value="{{ ind }}" {% if request.args.get('industry') == ind %}selected{% endif %}>{{ ind }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="sport">
+            <option value="">All Sports</option>
+            {% for sport in sports %}
+            <option value="{{ sport }}" {% if request.args.get('sport') == sport %}selected{% endif %}>{{ sport }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filter</button>
+    </div>
+</form>
+
+<!-- Business Cards -->
 <form method="POST">
     <div class="business-grid">
         {% for business in businesses %}
@@ -83,7 +190,7 @@
                 <p><strong>Target Sports:</strong> {{ business.target_sports }}</p>
             </div>
             <button type="submit" name="business_id" value="{{ business.id }}">
-                Add to NIL Deals
+                🤝 Add to NIL Deals
             </button>
         </div>
         {% endfor %}

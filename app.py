@@ -150,12 +150,10 @@ def businesses():
         flash("User not found. Please log in again.", "danger")
         return redirect(url_for('login'))
 
-    businesses = Business.query.all()
-
+    # Handle POST: Add to NIL Deals
     if request.method == 'POST':
         selected_business_id = request.form.get('business_id')
         business = Business.query.get(selected_business_id)
-
         if business:
             selected_deals = session.get(f"selected_deals_{user_id}", [])
             if business.name not in [deal["business"] for deal in selected_deals]:
@@ -168,10 +166,43 @@ def businesses():
                 flash("Business added to your NIL deals!", "success")
             else:
                 flash("This business is already in your NIL deals.", "warning")
-
         return redirect(url_for('dashboard'))
 
-    return render_template('businesses.html', athlete=athlete, businesses=businesses)
+    # Handle GET: Filtering
+    search = request.args.get('search', '').lower()
+    location = request.args.get('location')
+    industry = request.args.get('industry')
+    sport = request.args.get('sport')
+
+    query = Business.query
+
+    if search:
+        query = query.filter(Business.name.ilike(f'%{search}%'))
+
+    if location:
+        query = query.filter(Business.location == location)
+
+    if industry:
+        query = query.filter(Business.industry == industry)
+
+    if sport:
+        query = query.filter(Business.target_sports.ilike(f'%{sport}%'))
+
+    filtered_businesses = query.all()
+
+    # Get unique filter values
+    all_businesses = Business.query.all()
+    locations = sorted(set(b.location for b in all_businesses if b.location))
+    industries = sorted(set(b.industry for b in all_businesses if b.industry))
+    sports = sorted(set(s.strip() for b in all_businesses for s in b.target_sports.split(',') if b.target_sports))
+
+    return render_template('businesses.html',
+                           athlete=athlete,
+                           businesses=filtered_businesses,
+                           locations=locations,
+                           industries=industries,
+                           sports=sports)
+
 
 @app.route('/remove_business', methods=['POST'])
 def remove_business():
